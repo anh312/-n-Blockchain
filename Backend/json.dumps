@@ -1,0 +1,12 @@
+import json
+from flask import Response
+
+@app.route('/mine', methods=['GET'])
+def mine():
+    if not blockchain.pending_transactions:
+        response = json.dumps({"error": "Không có giao dịch để đào!"}, ensure_ascii=False)
+        return Response(response, status=400, mimetype='application/json; charset=utf-8')
+
+    blockchain.mine_pending_transactions()
+    response = json.dumps({"message": "Block mới đã được đào thành công!"}, ensure_ascii=False)
+    return Response(response, status=200, mimetype='application/json; charset=utf-8')
